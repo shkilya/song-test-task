@@ -125,6 +125,15 @@
             "config/packages/prod/jms_serializer.yaml"
         ]
     },
+    "laminas/laminas-code": {
+        "version": "3.4.1"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.2.1"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.0.4"
+    },
     "monolog/monolog": {
         "version": "2.1.0"
     },
@@ -228,7 +237,10 @@
             "branch": "master",
             "version": "1.6",
             "ref": "1c77a3e26d17c85c335d5c255d736da8848069fd"
-        }
+        },
+        "files": [
+            "config/packages/swarrot.yaml"
+        ]
     },
     "symfony/asset": {
         "version": "v5.1.2"
@@ -634,6 +646,9 @@
     },
     "twig/twig": {
         "version": "v3.0.4"
+    },
+    "webimpress/safe-writer": {
+        "version": "2.0.1"
     },
     "webmozart/assert": {
         "version": "1.9.0"
