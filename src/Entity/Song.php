@@ -12,6 +12,9 @@ class Song
 {
     public const DEFAULT_LIMIT = 20;
 
+    public const DEFAULT_SORT_ORDER = "ASC";
+    public const DEFAULT_SORT_FIELD = "id";
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

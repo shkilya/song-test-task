@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Song;
+use App\Utils\Filter\SongFilter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -21,17 +22,20 @@ class SongRepository extends ServiceEntityRepository
 
 
     /**
-     * @param int $page
-     * @param int $limit
+     * @param SongFilter $filter
      * @return Song[]|null
      */
-    public function getAll(int $page = 1 ,int $limit = Song::DEFAULT_LIMIT)
+    public function getAll(
+        SongFilter $filter
+    ): ?array
     {
-        $offset = ($page-1)*$limit;
-        $maxResults = $limit;
+        $offset     = ($filter->getPage() - 1) * $filter->getLimit();
+        $maxResults = $filter->getLimit();
 
         $queryBuilder = $this->createQueryBuilder('s')
-            ->getQuery();
+            ->orderBy( 's.'.$filter->getSortField(),$filter->getSortOrder());
+
+        $queryBuilder = $queryBuilder->getQuery();
 
         if (!is_null($offset)) {
             $queryBuilder->setFirstResult($offset);
