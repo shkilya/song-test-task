@@ -1,15 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Swarrot\Message;
 
 /**
- * Class SongCreationMessageInput
- * @package App\Swarrot\Message
+ * Class SongCreationMessageInput.
  */
 final class SongCreationMessageInput
 {
-
     /**
      * @var string
      */
@@ -68,5 +67,4 @@ final class SongCreationMessageInput
     {
         return $this->duration;
     }
-
 }

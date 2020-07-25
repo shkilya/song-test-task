@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Utils;
@@ -15,6 +16,7 @@ class SongManager
 
     /**
      * SongManager constructor.
+     *
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
@@ -24,20 +26,21 @@ class SongManager
 
     /**
      * @param Song $song
+     *
      * @return Song|null
      */
     public function createSong(Song $song): Song
     {
         $this->entityManager->persist($song);
         $this->entityManager->flush();
+
         return  $song;
     }
 
     public function updateSong(Song $song): Song
     {
         $this->entityManager->flush();
+
         return  $song;
     }
-
-
 }

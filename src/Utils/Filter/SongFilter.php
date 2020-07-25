@@ -1,11 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Utils\Filter;
 
 /**
- * Class SongFilter
- * @package App\Utils\Filter
+ * Class SongFilter.
  */
 class SongFilter
 {
@@ -24,7 +24,6 @@ class SongFilter
      */
     private string $sortField;
 
-
     /**
      * @var string
      */
@@ -32,20 +31,20 @@ class SongFilter
 
     /**
      * SongFilter constructor.
-     * @param int $page
-     * @param int $limit
+     *
+     * @param int    $page
+     * @param int    $limit
      * @param string $sortField
      * @param string $sortOrder
      */
     public function __construct(int $page, int $limit, string $sortField, string $sortOrder)
     {
-
         if ($page < 1) {
             throw new \DomainException('Page should be more or eq 1');
         }
         $this->page = $page;
 
-        $this->limit     = $limit;
+        $this->limit = $limit;
         $this->sortField = $sortField;
         $this->sortOrder = $sortOrder;
     }

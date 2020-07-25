@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Swarrot\Message;
@@ -7,8 +8,7 @@ use App\Models\Song;
 use Swarrot\Broker\Message;
 
 /**
- * Class SongCreationMessage
- * @package App\Swarrot\Message
+ * Class SongCreationMessage.
  */
 class SongCreationMessage extends Message
 {
@@ -16,24 +16,23 @@ class SongCreationMessage extends Message
 
     /**
      * SongCreationMessage constructor.
+     *
      * @param string $name
      * @param string $singer
-     * @param int $year
-     * @param int $duration
+     * @param int    $year
+     * @param int    $duration
      */
     public function __construct(
         string $name,
         string $singer,
         int $year,
         int $duration
-    )
-    {
+    ) {
         $data = [
-            'name'     => $name,
-            'singer'   => $singer,
-            'year'     => $year,
+            'name' => $name,
+            'singer' => $singer,
+            'year' => $year,
             'duration' => $duration,
-
         ];
 
         $body = json_encode($data);
@@ -41,9 +40,9 @@ class SongCreationMessage extends Message
         parent::__construct($body);
     }
 
-
     /**
      * @param Song $song
+     *
      * @return static
      */
     public static function create(Song $song): self
@@ -55,5 +54,4 @@ class SongCreationMessage extends Message
             $song->getDuration(),
         );
     }
-
 }

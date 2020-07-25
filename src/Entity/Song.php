@@ -13,8 +13,8 @@ class Song
 {
     public const DEFAULT_LIMIT = 20;
 
-    public const DEFAULT_SORT_ORDER = "ASC";
-    public const DEFAULT_SORT_FIELD = "id";
+    public const DEFAULT_SORT_ORDER = 'ASC';
+    public const DEFAULT_SORT_FIELD = 'id';
 
     /**
      * @ORM\Id()
@@ -26,7 +26,6 @@ class Song
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
-     *
      */
     private string $name;
 

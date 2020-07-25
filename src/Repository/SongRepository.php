@@ -20,20 +20,19 @@ class SongRepository extends ServiceEntityRepository
         parent::__construct($registry, Song::class);
     }
 
-
     /**
      * @param SongFilter $filter
+     *
      * @return Song[]|null
      */
     public function getAll(
         SongFilter $filter
-    ): ?array
-    {
-        $offset     = ($filter->getPage() - 1) * $filter->getLimit();
+    ): ?array {
+        $offset = ($filter->getPage() - 1) * $filter->getLimit();
         $maxResults = $filter->getLimit();
 
         $queryBuilder = $this->createQueryBuilder('s')
-            ->orderBy( 's.'.$filter->getSortField(),$filter->getSortOrder());
+            ->orderBy( 's.'.$filter->getSortField(), $filter->getSortOrder());
 
         $queryBuilder = $queryBuilder->getQuery();
 

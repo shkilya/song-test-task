@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Swarrot\Publisher;
@@ -8,8 +9,7 @@ use App\Swarrot\Message\SongCreationMessage;
 use Swarrot\SwarrotBundle\Broker\Publisher;
 
 /**
- * Class SongCreationPublisher
- * @package App\Swarrot\Publisher
+ * Class SongCreationPublisher.
  */
 class SongCreationPublisher
 {
@@ -20,15 +20,14 @@ class SongCreationPublisher
 
     /**
      * SongCreationPublisher constructor.
+     *
      * @param Publisher $publisher
      */
     public function __construct(
         Publisher $publisher
-    )
-    {
+    ) {
         $this->publisher = $publisher;
     }
-
 
     /**
      * @param Song $song

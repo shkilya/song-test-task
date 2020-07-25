@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Models;
@@ -7,7 +8,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class Song
 {
-
     /**
      * @Assert\NotBlank
      */
@@ -30,16 +30,17 @@ final class Song
 
     /**
      * Song constructor.
+     *
      * @param string $name
      * @param string $singer
-     * @param int $year
-     * @param int $duration
+     * @param int    $year
+     * @param int    $duration
      */
     public function __construct(string $name, string $singer, int $year, int $duration)
     {
-        $this->name     = $name;
-        $this->singer   = $singer;
-        $this->year     = $year;
+        $this->name = $name;
+        $this->singer = $singer;
+        $this->year = $year;
         $this->duration = $duration;
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Swarrot\Processor;
@@ -13,10 +14,9 @@ use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 
 /**
- * Class SongCreationProcessor
- * @package App\Swarrot\Processor
+ * Class SongCreationProcessor.
  */
-class SongCreationProcessor implements  ProcessorInterface
+class SongCreationProcessor implements ProcessorInterface
 {
     /**
      * @var SongManager
@@ -37,18 +37,18 @@ class SongCreationProcessor implements  ProcessorInterface
 
     /**
      * SongCreationProcessor constructor.
-     * @param SongManager $songManager
+     *
+     * @param SongManager            $songManager
      * @param EntityManagerInterface $entityManager
-     * @param SerializerInterface $serializer
-     * @param LoggerInterface $logger
+     * @param SerializerInterface    $serializer
+     * @param LoggerInterface        $logger
      */
     public function __construct(
         SongManager $songManager,
         EntityManagerInterface $entityManager,
         SerializerInterface $serializer,
         LoggerInterface $logger
-    )
-    {
+    ) {
         $this->songManager = $songManager;
         $this->entityManager = $entityManager;
         $this->serializer = $serializer;
@@ -57,7 +57,8 @@ class SongCreationProcessor implements  ProcessorInterface
 
     /**
      * @param Message $message
-     * @param array $options
+     * @param array   $options
+     *
      * @return bool
      */
     public function process(Message $message, array $options): bool
@@ -77,11 +78,11 @@ class SongCreationProcessor implements  ProcessorInterface
                 ->setDuration($songCreationMessage->getDuration());
 
             $this->songManager->createSong($song);
-
-        }catch (\Exception $exception){
-            $this->logger->critical('Song creation processor error',[
-                'message'=>$exception->getMessage()
+        } catch (\Exception $exception) {
+            $this->logger->critical('Song creation processor error', [
+                'message' => $exception->getMessage(),
             ]);
+
             throw $exception;
         }
     }
