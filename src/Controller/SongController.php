@@ -13,6 +13,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Exception\ValidatorException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SongController extends AbstractController
 {
@@ -38,6 +40,10 @@ class SongController extends AbstractController
      * @var LoggerInterface
      */
     private LoggerInterface $logger;
+    /**
+     * @var ValidatorInterface
+     */
+    private ValidatorInterface $validator;
 
     /**
      * SongController constructor.
@@ -45,18 +51,21 @@ class SongController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @param SongManager $songManager
      * @param LoggerInterface $logger
+     * @param ValidatorInterface $validator
      */
     public function __construct(
         SongRepository $songRepository,
         EntityManagerInterface $entityManager,
         SongManager $songManager,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ValidatorInterface $validator
     )
     {
         $this->songRepository = $songRepository;
         $this->entityManager  = $entityManager;
         $this->songManager    = $songManager;
         $this->logger         = $logger;
+        $this->validator = $validator;
     }
 
 
@@ -113,6 +122,12 @@ class SongController extends AbstractController
                 ->setDuration((int)$request->get('duration'))
                 ->setYear((int)$request->get('year'));
 
+            $errors = $this->validator->validate($song);
+
+            if(count($errors)){
+                throw new ValidatorException('Song validation error',['message'=>$errors]);
+            }
+
             $this->songManager->createSong($song);
             return $this->json(['message' => sprintf('Song  %s was created', $song->getName())], 201);
         } catch (\Exception $exception) {
@@ -137,6 +152,12 @@ class SongController extends AbstractController
                 ->setSinger((string)$request->get('singer'))
                 ->setDuration((int)$request->get('duration'))
                 ->setYear((int)$request->get('year'));
+            $errors = $this->validator->validate($song);
+
+            if(count($errors)){
+                throw new ValidatorException('Song validation error',['message'=>$errors]);
+            }
+
 
             $this->entityManager->flush();
 
