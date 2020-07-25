@@ -65,7 +65,7 @@ class SongController extends AbstractController
         $this->entityManager  = $entityManager;
         $this->songManager    = $songManager;
         $this->logger         = $logger;
-        $this->validator = $validator;
+        $this->validator      = $validator;
     }
 
 
@@ -124,15 +124,17 @@ class SongController extends AbstractController
 
             $errors = $this->validator->validate($song);
 
-            if(count($errors)){
-                throw new ValidatorException('Song validation error',['message'=>$errors]);
+            if (count($errors)) {
+                throw new ValidatorException('Song validation error', ['message' => $errors]);
             }
 
             $this->songManager->createSong($song);
+
             return $this->json(['message' => sprintf('Song  %s was created', $song->getName())], 201);
+
         } catch (\Exception $exception) {
             $this->logger->critical('Song create exception', ['message' => $exception->getMessage()]);
-            return $this->json(['Something went wrong'], 500);
+            throw new \Exception('Song create error');
         }
     }
 
@@ -152,19 +154,20 @@ class SongController extends AbstractController
                 ->setSinger((string)$request->get('singer'))
                 ->setDuration((int)$request->get('duration'))
                 ->setYear((int)$request->get('year'));
+
             $errors = $this->validator->validate($song);
 
-            if(count($errors)){
-                throw new ValidatorException('Song validation error',['message'=>$errors]);
+            if (count($errors)) {
+                throw new ValidatorException('Song validation error', ['message' => $errors]);
             }
-
 
             $this->entityManager->flush();
 
             return $this->json(['message' => sprintf('Song  %s was created', $song->getName())]);
+
         } catch (\Exception $exception) {
             $this->logger->critical('Song update exception', ['message' => $exception->getMessage()]);
-            return $this->json(['Something went wrong'], 500);
+            throw new \Exception('Song update error');
         }
     }
 
@@ -172,17 +175,21 @@ class SongController extends AbstractController
      * @Route("/songs/{id}", methods={"DELETE"})
      * @param int $id
      * @return Response
+     * @throws \Exception
      */
     public function delete(int $id): Response
     {
         try {
+
             $song = $this->songRepository->find($id);
             $this->entityManager->remove($song);
             $this->entityManager->flush();
+
             return $this->json(['message' => sprintf('Song %s was removed', $song->getName())]);
+
         } catch (\Exception $exception) {
-            $this->logger->critical('Song create exception', ['message' => $exception->getMessage()]);
-            return $this->json(['message' => 'Something went wrong'], 500);
+            $this->logger->critical('Song delete exception', ['message' => $exception->getMessage()]);
+            throw new \Exception('Song delete error');
         }
     }
 }
