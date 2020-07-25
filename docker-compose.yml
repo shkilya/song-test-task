@@ -52,7 +52,17 @@ services:
       - POSTGRES_DB=project
       - POSTGRES_USER=developer
       - POSTGRES_PASSWORD=password
+  rabbitmq:
+    build:
+      context: .
+      dockerfile: docker/rabbitmq/Dockerfile
+    networks:
+      - song_message_bus
+    ports:
+      - "15682:15672"
 
 networks:
   eldorado_song_backend:
+    external: true
+  song_message_bus:
     external: true

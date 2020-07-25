@@ -6,6 +6,9 @@
 ```bash
 docker network create -d bridge --subnet 192.168.82.0/24 --gateway 192.168.82.1 eldorado_song_backend
 ```
+```bash
+docker network create -d bridge song_message_bus
+```
 
 ### Docker Up
 ```bash
@@ -16,6 +19,19 @@ docker-compose up -d
 ```bash
 ./composer.sh install
 ```
+
+### Install RabbitMQ queues + exchanges:
+```bash
+./rabbit.sh vhost:mapping:create /usr/src/app/rabbitmq/song_vhost.yml -Hrabbitmq -uguest -pguest
+```
+
+## Consumers
+
+### Song created 
+```
+./console.sh swarrot:consume:song_created
+```
+
 
 ## Development
 

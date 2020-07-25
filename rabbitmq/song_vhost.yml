@@ -1,0 +1,17 @@
+songs:
+    parameters:
+        with_dl: true
+
+    exchanges:
+        song_creation:
+            type: direct
+            durable: true
+            with_unroutable: false
+            with_dl: true
+
+    queues:
+        song_creation:
+            durable: true
+            bindings:
+                -
+                    exchange: song_creation
