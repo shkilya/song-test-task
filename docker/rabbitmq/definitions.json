@@ -1,0 +1,23 @@
+{
+  "users": [
+    {
+      "name": "guest",
+      "password": "guest",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "songs"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "guest",
+      "vhost": "songs",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ]
+}

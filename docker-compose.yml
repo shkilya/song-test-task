@@ -59,7 +59,7 @@ services:
     networks:
       - song_message_bus
     ports:
-      - "15682:15672"
+      - "15683:15672"
 
 networks:
   eldorado_song_backend:

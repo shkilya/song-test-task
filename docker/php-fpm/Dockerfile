@@ -59,10 +59,5 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY . /usr/src/app
 
 
-RUN if [ $environment = "prod" ]; then APP_ENV=prod \
-     && echo "Fix permissions" \
-     && chown -R www-data:www-data /usr/src/app; fi
-
-RUN if [ $environment = "dev" ]; then composer install --no-interaction; fi
 
 CMD ["php-fpm"]
