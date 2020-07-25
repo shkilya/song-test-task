@@ -1,0 +1,36 @@
+swarrot:
+  provider: amqp_lib
+  default_connection: songs
+  default_command: swarrot.command.base
+  logger: logger
+
+  connections:
+    songs:
+      host: "%env(RABBITMQ_HOST)%"
+      port: "%env(int:RABBITMQ_PORT)%"
+      login: "%env(RABBITMQ_LOGIN)%"
+      password: "%env(RABBITMQ_PASSWORD)%"
+      vhost: '%env(resolve:RABBITMQ_VHOST_ACCOUNTS)%'
+
+
+  consumers:
+    user_created_confirmation:
+      processor: App\Swarrot\Processor\SongCreationProcessor
+      middleware_stack:
+        -   configurator: swarrot.processor.signal_handler
+        -   configurator: swarrot.processor.max_messages
+            extras:
+              max_messages: 50
+        -   configurator: swarrot.processor.doctrine_connection
+            extras:
+              doctrine_ping: true
+        -   configurator: swarrot.processor.doctrine_object_manager
+        -   configurator: swarrot.processor.ack
+            extras:
+              requeue_on_error: true
+
+  messages_types:
+    song_creation:
+      connection: songs
+      exchange: song_creation
+      routing_key: song_creation

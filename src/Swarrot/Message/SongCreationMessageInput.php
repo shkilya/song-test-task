@@ -1,46 +1,40 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Swarrot\Message;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
-final class Song
+/**
+ * Class SongCreationMessageInput
+ * @package App\Swarrot\Message
+ */
+final class SongCreationMessageInput
 {
 
     /**
-     * @Assert\NotBlank
+     * @var string
      */
     private string $name;
 
     /**
-     * @Assert\NotBlank
+     * @var string
      */
     private string $singer;
 
     /**
-     * @Assert\NotBlank
+     * @var int
      */
     private int $year;
 
     /**
-     * @Assert\NotBlank
+     * @var int
      */
     private int $duration;
 
     /**
-     * Song constructor.
-     * @param string $name
-     * @param string $singer
-     * @param int $year
-     * @param int $duration
+     * SongCreationMessageInput constructor.
      */
-    public function __construct(string $name, string $singer, int $year, int $duration)
+    private function __construct()
     {
-        $this->name     = $name;
-        $this->singer   = $singer;
-        $this->year     = $year;
-        $this->duration = $duration;
     }
 
     /**
@@ -74,4 +68,5 @@ final class Song
     {
         return $this->duration;
     }
+
 }

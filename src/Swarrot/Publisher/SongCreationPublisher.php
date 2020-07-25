@@ -3,8 +3,14 @@ declare(strict_types=1);
 
 namespace App\Swarrot\Publisher;
 
+use App\Models\Song;
+use App\Swarrot\Message\SongCreationMessage;
 use Swarrot\SwarrotBundle\Broker\Publisher;
 
+/**
+ * Class SongCreationPublisher
+ * @package App\Swarrot\Publisher
+ */
 class SongCreationPublisher
 {
     /**
@@ -24,9 +30,14 @@ class SongCreationPublisher
     }
 
 
+    /**
+     * @param Song $song
+     */
     public function publicSongCreationMessage(Song $song)
     {
-
+        $this->publisher->publish(
+            SongCreationMessage::TYPE_SONG_CREATION,
+            SongCreationMessage::create($song)
+        );
     }
-
 }

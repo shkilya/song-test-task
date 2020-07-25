@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Song;
 use App\Repository\SongRepository;
+use App\Swarrot\Publisher\SongCreationPublisher;
 use App\Utils\Filter\SongFilter;
 use App\Utils\SongManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -44,11 +45,16 @@ class SongController extends AbstractController
      * @var ValidatorInterface
      */
     private ValidatorInterface $validator;
+    /**
+     * @var SongCreationPublisher
+     */
+    private SongCreationPublisher $songCreationPublisher;
 
     /**
      * SongController constructor.
      * @param SongRepository $songRepository
      * @param EntityManagerInterface $entityManager
+     * @param SongCreationPublisher $songCreationPublisher
      * @param SongManager $songManager
      * @param LoggerInterface $logger
      * @param ValidatorInterface $validator
@@ -56,16 +62,18 @@ class SongController extends AbstractController
     public function __construct(
         SongRepository $songRepository,
         EntityManagerInterface $entityManager,
+        SongCreationPublisher $songCreationPublisher,
         SongManager $songManager,
         LoggerInterface $logger,
         ValidatorInterface $validator
     )
     {
-        $this->songRepository = $songRepository;
-        $this->entityManager  = $entityManager;
-        $this->songManager    = $songManager;
-        $this->logger         = $logger;
-        $this->validator      = $validator;
+        $this->songRepository        = $songRepository;
+        $this->entityManager         = $entityManager;
+        $this->songManager           = $songManager;
+        $this->logger                = $logger;
+        $this->validator             = $validator;
+        $this->songCreationPublisher = $songCreationPublisher;
     }
 
 
@@ -116,11 +124,13 @@ class SongController extends AbstractController
     {
 
         try {
-            $song = (new Song())
-                ->setName((string)$request->get('name'))
-                ->setSinger((string)$request->get('singer'))
-                ->setDuration((int)$request->get('duration'))
-                ->setYear((int)$request->get('year'));
+
+            $song = new \App\Models\Song(
+                (string)$request->get('name'),
+                (string)$request->get('singer'),
+                (int)$request->get('duration'),
+                (int)$request->get('year')
+            );
 
             $errors = $this->validator->validate($song);
 
@@ -128,7 +138,10 @@ class SongController extends AbstractController
                 throw new ValidatorException('Song validation error', ['message' => $errors]);
             }
 
-            $this->songManager->createSong($song);
+            /**
+             *  Publish message in queue
+             */
+            $this->songCreationPublisher->publicSongCreationMessage($song);
 
             return $this->json(['message' => sprintf('Song  %s was created', $song->getName())], 201);
 
