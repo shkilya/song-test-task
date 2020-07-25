@@ -149,6 +149,9 @@
     "php": {
         "version": "7.4"
     },
+    "php-amqplib/php-amqplib": {
+        "version": "v2.11.3"
+    },
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
     },
@@ -160,6 +163,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.3.0"
+    },
+    "phpseclib/phpseclib": {
+        "version": "2.0.28"
     },
     "phpstan/phpdoc-parser": {
         "version": "0.4.4"
