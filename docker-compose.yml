@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  php-fpm:
+    build:
+      context: .
+      dockerfile: docker/php-fpm/Dockerfile
+      args:
+        environment: dev
+    volumes:
+      - ./:/usr/src/app
+      - "~/.composer.sh:/root/.composer.sh"
+      - "~/.ssh:/root/.ssh-local:ro"
+    networks:
+      - eldorado_song_backend
+    depends_on:
+      - postgres
+    environment:
+      - LOCAL_ENV=1
+      - COMPOSER_ALLOW_SUPERUSER=1
+      - DATABASE_HOST=mysql
+      - DATABASE_NAME=project
+      - DATABASE_USER=developer
+      - DATABASE_PASSWORD=password
+      - PHP_IDE_CONFIG=serverName=docker
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+      args:
+        environment: dev
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - "8820:80"
+    networks:
+      - eldorado_song_backend
+    depends_on:
+      - php-fpm
+
+  postgres:
+    image: postgres:11
+    volumes:
+      - ./docker/postgres/:/docker-entrypoint-initdb.d/
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5810:5432"
+    networks:
+      - eldorado_song_backend
+    environment:
+      - POSTGRES_DB=project
+      - POSTGRES_USER=developer
+      - POSTGRES_PASSWORD=password
+
+networks:
+  eldorado_song_backend:
+    external: true
